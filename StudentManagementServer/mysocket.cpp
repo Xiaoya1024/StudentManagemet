@@ -13,8 +13,13 @@ void MySocket::slotRevData(){
     response_header responseHeader;
     user_simple_package userSimplePackage;
     user_full_package userFullPackage;
+    user_full_package* stuInfoInClass;
+    user_mid_package* stuInfoInCourse;
     student_course_package* stuCoursePackage;
+    student_course_package* courseAllInfo;
     student_courseScore_package* stuCourseScorePackage;
+    InstituteInfo_package* instituteInfoPackage;
+    ClassInfo_package* classInfoPackage;
 
     read((char*)&clientHeader,sizeof(client_header));
     qDebug()<<clientHeader.cmdType<<clientHeader.length;
@@ -37,19 +42,21 @@ void MySocket::slotRevData(){
             write((char*)&responseHeader,sizeof(response_header));
             qDebug()<<"successful";
             userID=loginPackage.userID;
-            userSimplePackage=sqlServer.FindUserSimpleInfo(userID,userType);
-            write((char*)&userSimplePackage,sizeof(user_simple_package));
-
-            QPixmap pix(tr(":/1.jpg"));
-            QBuffer buffer;
-            buffer.open(QIODevice::WriteOnly);
-            pix.save(&buffer,"jpg",20);
-            quint32 pix_len=(quint32)buffer.data().size();
-            qDebug()<<"image size:"<<pix_len;
-            QByteArray dataArray;
-            dataArray.append(buffer.data());
-            quint32 write_len=write(dataArray);
-            qDebug()<<"write len:"<<write_len;
+            if(userType!=4){
+                userSimplePackage=sqlServer.FindUserSimpleInfo(userID,userType);
+                write((char*)&userSimplePackage,sizeof(user_simple_package));
+                //发送图片信息
+                QPixmap pix(tr(":/1.jpg"));
+                QBuffer buffer;
+                buffer.open(QIODevice::WriteOnly);
+                pix.save(&buffer,"jpg",20);
+                quint32 pix_len=(quint32)buffer.data().size();
+                qDebug()<<"image size:"<<pix_len;
+                QByteArray dataArray;
+                dataArray.append(buffer.data());
+                quint32 write_len=write(dataArray);
+                qDebug()<<"write len:"<<write_len;
+            }
         }
     }
         break;
@@ -99,17 +106,128 @@ void MySocket::slotRevData(){
     case 0x04:{//学生点击选课按钮，查看选修课信息
         int type=clientHeader.length;
         int num=0;
-        stuCoursePackage=sqlServer.FindStuSelectedCourseInfo(userID,type,&num);
+        stuCoursePackage=sqlServer.FindStuSelectedCourseInfo(userID,type,&num);//找到选修课的信息
         qDebug()<<"选修课的个数："<<num;
         responseHeader.statu=0x05;
         responseHeader.length=num;
         write((char*)&responseHeader,sizeof(response_header));
         qDebug()<<"successful";
         for(int i=0;i<num;i++){
-            write((char*)&stuCoursePackage[i],sizeof(stuCoursePackage));
+            write((char*)&stuCoursePackage[i],sizeof(student_course_package));
             qDebug()<<"选修课序号："<<stuCoursePackage[i].CourseID<<stuCoursePackage[i].CourseName<<stuCoursePackage[i].CourseCredit
                    <<stuCoursePackage[i].CourseTypeName<<stuCoursePackage[i].TchName<<stuCoursePackage[i].CourseLimitNum<<
                      stuCoursePackage[i].StuNum<<stuCoursePackage[i].isSelected;
+        }
+    }
+        break;
+    case 0x05:{//学生点击某一门课进行选课
+          student_courseScore_package stuCourseScorePag;
+          read((char*)&stuCourseScorePag,sizeof(student_courseScore_package));
+          qDebug()<<"点击的选课科目码："<<stuCourseScorePag.CourseID;
+          bool isOk=sqlServer.isStuSelectedCourseSucced(userID,QString(stuCourseScorePag.CourseID));
+          responseHeader.statu=0x06;
+          if(isOk){//表示选课成功
+              responseHeader.length=1;
+          }
+          else responseHeader.length=0;
+          write((char*)&responseHeader,sizeof(response_header));
+    }
+        break;
+    case 0x06:{//用户点击修改密码
+        read((char*)&loginPackage,sizeof(login_package));
+        bool isOk=sqlServer.ChangePwd(userID,loginPackage.password);
+        if(isOk){
+            responseHeader.length=1;
+        }
+        else responseHeader.length=0;
+        responseHeader.statu=0x07;
+        write((char*)&responseHeader,sizeof(response_header));
+    }
+        break;
+    case 0x07:{//管理员点击学院查询
+        int num=0;
+        instituteInfoPackage=sqlServer.FindInstituteInfo(&num);
+        responseHeader.statu=0x08;
+        responseHeader.length=num;
+        write((char*)&responseHeader,sizeof(response_header));
+        for(int i=0;i<num;i++){
+            write((char*)&instituteInfoPackage[i],sizeof(InstituteInfo_package));
+            qDebug()<<"学院信息"<<i<<":"<<instituteInfoPackage[i].InstituteID<<instituteInfoPackage[i].InstituteName
+                   <<instituteInfoPackage[i].AssistantName<<instituteInfoPackage[i].StuNum;
+        }
+
+    }
+        break;
+    case 0x08:{//管理员在学院查询那里点击了查看
+        int len=clientHeader.length;
+        char ID[10];
+        read((char*)ID,len);
+        QString instituteID(ID);
+        qDebug()<<"instituteID:"<<instituteID;
+        int num=0;
+        classInfoPackage=sqlServer.FindClassInfo(instituteID,&num);
+        responseHeader.statu=0x09;
+        responseHeader.length=num;
+        write((char*)&responseHeader,sizeof(response_header));
+        for(int i=0;i<num;i++){
+            write((char*)&classInfoPackage[i],sizeof(ClassInfo_package));
+            qDebug()<<"班级信息"<<i<<":"<<classInfoPackage[i].ClassID<<classInfoPackage[i].ClassName
+                   <<classInfoPackage[i].MasterName<<classInfoPackage[i].MonitorName<<classInfoPackage[i].StuNum;
+        }
+
+    }
+        break;
+    case 0x09:{//管理员在班级查询那里点了查看，查看该班级里的学生信息
+        int len=clientHeader.length;//发给我的长度
+        char ID[10];
+        read((char*)ID,len);
+        QString classID(ID);
+        qDebug()<<"ClassID:"<<classID;
+        int num=0;
+        stuInfoInClass=sqlServer.FindStuInfoInClass(classID,&num);
+        responseHeader.statu=0x0A;
+        responseHeader.length=num;
+        write((char*)&responseHeader,sizeof(response_header));
+        for(int i=0;i<num;i++){
+            waitForBytesWritten(10);//避免接收方收不完整
+            qint64 x=write((char*)&stuInfoInClass[i],sizeof(user_full_package));
+            qDebug()<<"发送的包的大小："<<x;
+            qDebug()<<"学生名字："<<stuInfoInClass[i].userName;
+        }
+    }
+        break;
+    case 0x0A:{//管理员点击课程查询按钮，服务端返回所有的课程信息
+        int num=0;
+        int type=clientHeader.length;
+        courseAllInfo=sqlServer.FindAllCourseInfo(&num,type);
+        qDebug()<<"课程的个数："<<num;
+        responseHeader.statu=0x0B;
+        responseHeader.length=num;
+        write((char*)&responseHeader,sizeof(response_header));
+        for(int i=0;i<num;i++){
+            write((char*)&courseAllInfo[i],sizeof(student_course_package));
+            qDebug()<<"选修课序号："<<courseAllInfo[i].CourseID<<courseAllInfo[i].CourseName<<courseAllInfo[i].CourseCredit
+                   <<courseAllInfo[i].CourseTypeName<<courseAllInfo[i].TchName<<courseAllInfo[i].CourseLimitNum<<
+                     courseAllInfo[i].StuNum;
+        }
+    }
+        break;
+    case 0x0B:{//管理员点击某一个课程的查看信息，返回选择该课程的所有同学信息
+        int len=clientHeader.length;
+        char ID[10];
+        read((char*)ID,len);
+        QString CourseID(ID);
+        qDebug()<<"CourseID"<<CourseID;
+        int num=0;
+        stuInfoInCourse=sqlServer.FindStuInfoInCourse(CourseID,&num);
+        responseHeader.statu=0x0C;
+        responseHeader.length=num;
+        write((char*)&responseHeader,sizeof(response_header));
+        for(int i=0;i<num;i++){
+         //   waitForBytesWritten(10);
+            qint64 x=write((char*)&stuInfoInCourse[i],sizeof(user_mid_package));
+            qDebug()<<"发送的包的大小："<<x;
+            qDebug()<<"学生名字："<<stuInfoInCourse[i].userName;
         }
     }
         break;

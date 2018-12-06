@@ -82,8 +82,8 @@ user_full_package SqlServer::FindUserFullInfo(QString userID, int userType){//�
         int num=query->numRowsAffected();
         qDebug()<<"num:"<<num;
         query->next();
-        strncpy(userFullPackage.userInstituteName,query->value("InstitueName").toString().toLocal8Bit().data(),30);
 
+        strncpy(userFullPackage.userInstituteName,query->value("InstitueName").toString().toLocal8Bit().data(),30);
         strncpy(userFullPackage.userClassName,query->value("ClassName").toString().toLocal8Bit().data(),30);
         strncpy(userFullPackage.userAssistantName,query->value("AssistantName").toString().toLocal8Bit().data(),20);
         strncpy(userFullPackage.usermasterName,query->value("MasterName").toString().toLocal8Bit().data(),20);
@@ -140,13 +140,13 @@ student_course_package* SqlServer::FindStuSelectedCourseInfo(QString StuID, int 
     if(type==0)//查询全部选修课信息
         str=QString("select * from selectedCourseInfo");
     else if(type==1)//通识课
-        str=QString("select * from selectedCourseInfo where courseTypeName='通识课'");
+        str=QString("select * from selectedCourseInfo where courseTypeID='01'");
     else if(type==2)//实践课
-        str=QString("select * from selectedCourseInfo where courseTypeName='实践课'");
+        str=QString("select * from selectedCourseInfo where courseTypeID='02'");
     else if(type==3)//英语课
-        str=QString("select * from selectedCourseInfo where courseTypeName='英语课'");
+        str=QString("select * from selectedCourseInfo where courseTypeID='03'");
     else if(type==4)//体育课
-        str=QString("select * from selectedCourseInfo where courseTypeName='体育课'");
+        str=QString("select * from selectedCourseInfo where courseTypeID='04'");
     query->exec(str);
     int num=query->numRowsAffected();
     *cont=num;
@@ -165,12 +165,149 @@ student_course_package* SqlServer::FindStuSelectedCourseInfo(QString StuID, int 
 
         QString str1=QString("select * from stuCourseInfo where StuID='%1'and CourseID='%2'").arg(StuID).arg(studentCoursePackage[i].CourseID);
         query2->exec(str1);
-        int num=query2->numRowsAffected();
-        if(num==1)
-            studentCoursePackage[i].isSelected=true;
+        int num1=query2->numRowsAffected();
+        qDebug()<<"这个课是否已经选过？1：已选，0：未选"<<num1;
+        if(num1==1)
+            studentCoursePackage[i].isSelected=true;//说明已经选过这门课
         else
-            studentCoursePackage[i].isSelected=false;
+            studentCoursePackage[i].isSelected=false;//说明还没有选这门课
         i++;
     }
     return studentCoursePackage;
+}
+bool SqlServer::isStuSelectedCourseSucced(QString StuID, QString CourseID){
+
+    query->prepare("exec p_checkinsert ?,?,?");
+    query->bindValue(0,StuID);
+    query->bindValue(1,CourseID);
+    query->bindValue(2,1,QSql::Out);
+    bool isOk=query->exec();
+    qDebug()<<"是否执行成功isOk："<<isOk;
+    int num=query->boundValue(2).toInt();
+    qDebug()<<"num:"<<num;
+    if(num==1){
+        QString str=QString("insert into ScoreTable values('%1','%2',NULL)").arg(StuID).arg(CourseID);
+        qDebug()<<str;
+        query2->exec(str);
+        qDebug()<<"进入到里面";
+        return true;
+    }
+    else return false;
+}
+bool SqlServer::ChangePwd(QString UserID, QString Pwd){
+    QString str=QString("update UserTable Set UserPwd='%1' where UserID='%2'").arg(Pwd).arg(UserID);
+    bool isOk=query->exec(str);
+    return isOk;
+}
+InstituteInfo_package* SqlServer::FindInstituteInfo(int *cont){
+    QString str=QString("select * from InstituteInfo");
+    query->exec(str);
+    *cont=query->numRowsAffected();
+    qDebug()<<"学院的个数："<<*cont;
+    InstituteInfo_package* instituteInfoPackage;
+    instituteInfoPackage=(InstituteInfo_package*)malloc(sizeof(InstituteInfo_package)*(*cont));
+    int i=0;
+    while (query->next()) {
+        strncpy(instituteInfoPackage[i].InstituteID,query->value("InstituteID").toString().toLocal8Bit().data(),10);
+        strncpy(instituteInfoPackage[i].InstituteName,query->value("InstitueName").toString().toLocal8Bit().data(),30);
+        strncpy(instituteInfoPackage[i].AssistantName,query->value("AssistantName").toString().toLocal8Bit().data(),20);
+        instituteInfoPackage[i].StuNum=query->value("stuNum").toInt();
+        i++;
+    }
+    return instituteInfoPackage;
+}
+ClassInfo_package* SqlServer::FindClassInfo(QString InstituteID, int *cont){
+    QString str=QString("Select * from classInfo where InstituteID='%1'").arg(InstituteID);
+    query->exec(str);
+    *cont=query->numRowsAffected();
+    qDebug()<<"这个学院里的班级数目："<<*cont;
+    ClassInfo_package* classInfoPackage;
+    classInfoPackage=(ClassInfo_package*)malloc(sizeof(ClassInfo_package)*(*cont));
+    int i=0;
+    while (query->next()) {
+        strncpy(classInfoPackage[i].ClassID,query->value("ClassID").toString().toLocal8Bit().data(),10);
+        strncpy(classInfoPackage[i].ClassName,query->value("ClassName").toString().toLocal8Bit().data(),30);
+        strncpy(classInfoPackage[i].MasterName,query->value("MasterName").toString().toLocal8Bit().data(),20);
+        strncpy(classInfoPackage[i].MonitorName,query->value("MonitorName").toString().toLocal8Bit().data(),20);
+        classInfoPackage[i].StuNum=query->value("StuNum").toInt();
+        i++;
+    }
+    return classInfoPackage;
+}
+user_full_package* SqlServer::FindStuInfoInClass(QString ClassID, int *cont){
+    QString str=QString("select * from stuFullInfo where ClassID='%1'").arg(ClassID);
+    query->exec(str);
+    *cont=query->numRowsAffected();
+    qDebug()<<"这个班级的学生人数："<<*cont;
+    user_full_package* stuInfoInClass;
+    stuInfoInClass=(user_full_package*)malloc(sizeof(user_full_package)*(*cont));
+    int i=0;
+    while(query->next()){
+        strncpy(stuInfoInClass[i].userID,query->value("StuID").toString().toLocal8Bit().data(),10);
+        strncpy(stuInfoInClass[i].userName,query->value("StuName").toString().toLocal8Bit().data(),20);
+        strncpy(stuInfoInClass[i].userInstituteName,query->value("InstitueName").toString().toLocal8Bit().data(),30);
+        strncpy(stuInfoInClass[i].userClassName,query->value("ClassName").toString().toLocal8Bit().data(),30);
+        strncpy(stuInfoInClass[i].userAssistantName,query->value("AssistantName").toString().toLocal8Bit().data(),20);
+        strncpy(stuInfoInClass[i].usermasterName,query->value("MasterName").toString().toLocal8Bit().data(),20);
+        stuInfoInClass[i].userGender=query->value("StuGender").toBool();
+        strncpy(stuInfoInClass[i].userCardID,query->value("StuCardID").toString().toLocal8Bit().data(),20);
+        QString str1=stuInfoInClass[i].userCardID;
+        strncpy(stuInfoInClass[i].userBirthDay,QString(str1.mid(6,8)).toLocal8Bit().data(),10);
+        stuInfoInClass[i].userAge=2018-str1.mid(6,4).toInt();
+        strncpy(stuInfoInClass[i].userNativePlace,query->value("StuNativePlace").toString().toLocal8Bit().data(),50);
+        strncpy(stuInfoInClass[i].userNationality,query->value("StuNationality").toString().toLocal8Bit().data(),50);
+        i++;
+    }
+    return stuInfoInClass;
+}
+student_course_package* SqlServer::FindAllCourseInfo(int *cont,int type){
+    QString str;
+    if(type==0)//查询全部选修课信息
+        str=QString("select * from selectedCourseInfo");
+    else if(type==1)//通识课
+        str=QString("select * from selectedCourseInfo where courseTypeID='01'");
+    else if(type==2)//实践课
+        str=QString("select * from selectedCourseInfo where courseTypeID='02'");
+    else if(type==3)//英语课
+        str=QString("select * from selectedCourseInfo where courseTypeID='03'");
+    else if(type==4)//体育课
+        str=QString("select * from selectedCourseInfo where courseTypeID='04'");
+    else if(type==5)//专业课
+        str=QString("select * from selectedCourseInfo where courseTypeID='05'");
+    query->exec(str);
+    int num=query->numRowsAffected();
+    *cont=num;
+    qDebug()<<"课程的个数："<<num;
+    student_course_package* courseAllInfo;
+    courseAllInfo=(student_course_package*)malloc(sizeof(student_course_package)*num);
+    int i=0;
+    while(query->next()){
+        strncpy(courseAllInfo[i].CourseID,query->value("CourseID").toString().toLocal8Bit().data(),10);
+        strncpy(courseAllInfo[i].CourseName,query->value("CourseName").toString().toLocal8Bit().data(),30);
+        strncpy(courseAllInfo[i].CourseTypeName,query->value("CourseTypeName").toString().toLocal8Bit().data(),20);
+        strncpy(courseAllInfo[i].TchName,query->value("TeacherName").toString().toLocal8Bit().data(),20);
+        courseAllInfo[i].CourseCredit=query->value("CourseCredit").toInt();
+        courseAllInfo[i].CourseLimitNum=query->value("CourseLimitNum").toInt();
+        courseAllInfo[i].StuNum=query->value("StuNum").toInt();
+        i++;
+    }
+    return courseAllInfo;
+}
+user_mid_package* SqlServer::FindStuInfoInCourse(QString CourseID, int *cont){
+    QString str=QString("select * from stuFullInfo,stuCourseInfo where stuFullInfo.StuID=stuCourseInfo.StuID and CourseID='%1'").arg(CourseID);
+    query->exec(str);
+    *cont=query->numRowsAffected();
+    qDebug()<<"选这门课的学生人数："<<*cont;
+    user_mid_package* stuInfoInCourse;
+    stuInfoInCourse=(user_mid_package*)malloc(sizeof(user_mid_package)*(*cont));
+    int i=0;
+    while(query->next()){
+       strncpy(stuInfoInCourse[i].userID,query->value("StuID").toString().toLocal8Bit().data(),10);
+       strncpy(stuInfoInCourse[i].userName,query->value("StuName").toString().toLocal8Bit().data(),20);
+       strncpy(stuInfoInCourse[i].userInstituteName,query->value("InstitueName").toString().toLocal8Bit().data(),30);
+       strncpy(stuInfoInCourse[i].userClassName,query->value("ClassName").toString().toLocal8Bit().data(),30);
+       stuInfoInCourse[i].userGender=query->value("StuGender").toBool();
+       i++;
+    }
+    return stuInfoInCourse;
 }

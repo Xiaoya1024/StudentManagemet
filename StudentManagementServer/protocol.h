@@ -8,6 +8,12 @@ statu   含义
 0x02    点击已选课程，请求已选课程信息
 0x03    点击成绩，请求查看课程成绩
 0x04    点击选课，请求查看选修课成绩信息,0-全部，1-通识课，2-实践，3-英语，4-体育
+0x05    学生点击选择某一门课
+0x06    点击修改密码
+0x07    点击学院查询
+0x08    在学院查询列表那里，点击查看班级信息
+0x09    在班级查询列表那里，点击查看班级成员信息
+0x0A    点击课程查询按钮，查看所有的课程信息
 */
 #pragma pack (1)
 typedef struct client_header{
@@ -35,6 +41,11 @@ statu   含义
 0x04    表示接下来我要发送有成绩的课程信息
 0x05    表示接下来我要发送选修课的课程信息
 0x06    表示接下来我要发送：选课是否成功的信息
+0x07    表示回应修改密码是否成功
+0x08    表示回应学院查询的结果，发送学院的信息
+0x09    表述回应学院查询界面查看按钮，发送学院里面的班级信息
+0x0A    表述回应班级查询界面查看按钮，发送该班级的学生的信息
+0x0B    表示回应课程查询，发送所有的课程信息
 */
 typedef struct response_header{
     char statu;//响应状态码
@@ -50,6 +61,8 @@ typedef struct user_simple_package
 
 typedef struct user_full_package
 {
+    char userID[10];
+    char userName[20];
     char userInstituteName[30];//学院
     char userClassName[30];//班级
     char userAssistantName[20];//辅导员
@@ -61,6 +74,14 @@ typedef struct user_full_package
     char userNativePlace[50];
     char userNationality[50];
 }user_full_package;
+
+typedef struct user_mid_package{
+    char userID[10];
+    char userName[20];
+    bool userGender;
+    char userInstituteName[30];//学院
+    char userClassName[30];//班级
+}user_mid_package;
 
 typedef struct student_course_package
 {
@@ -81,6 +102,25 @@ typedef struct  student_courseScore_package
     char CourseName[30];
     int CourseScore;
 }student_courseScore_package;
+
+typedef struct InstituteInfo_package
+{
+    char InstituteID[10];
+    char InstituteName[30];
+    char AssistantName[20];
+    int StuNum;
+}InstituteInfo_package;
+
+//班级id，名字，学生人数，班主任，班长
+typedef struct ClassInfo_package
+{
+    char ClassID[10];
+    char ClassName[30];
+    char MasterName[20];
+    char MonitorName[20];
+    int StuNum;
+}ClassInfo_package;
+
 
 typedef struct ClientInfo{
     int socketDescriptor;
