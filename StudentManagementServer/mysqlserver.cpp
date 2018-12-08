@@ -7,10 +7,10 @@ SqlServer::SqlServer()
 void SqlServer::InitSql(){
     //添加SqlServer数据库
     db=QSqlDatabase::addDatabase("QODBC");
+    qDebug()<<"ODBC driver?"<<db.isValid();
     QString dsn=QString::fromLocal8Bit("QTDSN");
     //连接数据库
     db.setHostName("127.0.0.1");
-
     /*
     最初这里我和我的搭档都想错了，认为对于不同的用户，应该分类成拥有不同权限的角色，
     这样每次一个用户登录时，就直接让这个用户操作数据库，因为对这个用户分配了权限，
@@ -18,12 +18,12 @@ void SqlServer::InitSql(){
     理解的不到位，用户权限是为了给操作数据库的程序员们设置的，而不是给使用我们系统的
     用户使用的，使用我们系统的用户在我们这里只是一条数据，而不是拥有操作数据库的“程序员”，
     对于用户权限的控制应该体现在界面上，如果用户没有删除数据这个功能，那么用户的界面上就
-    不会显示删除这个按钮，这样用户就不能删除数据了。
+    不会显示删除这个按钮，这样用户就不除数据了。
     */
     //数据库用户名
     db.setUserName("sa");
     //数据库密码
-    db.setPassword("asdejing");
+    db.setPassword("123456");
     //使用的数据库名称
     db.setDatabaseName(dsn);
 
@@ -35,6 +35,7 @@ void SqlServer::InitSql(){
     }
     else{//数据库打开失败
         qDebug()<<"Database connected failed!";
+        qDebug()<<db.lastError().text();
         return;
     }
 }
@@ -117,7 +118,8 @@ student_course_package* SqlServer::FindStuCourseInfo(QString StuID,int*cont){//�
     return studentCoursePackage;
 }
 student_courseScore_package* SqlServer::FindStuCourseScoreInfo(QString StuID,int *cont){//学生查看自己成绩
-    QString str=QString("select * from stuCourseInfo where StuID='%1'and Score!=NULL").arg(StuID);
+    QString str=QString("select * from stuCourseInfo where StuID='%1'and Score is not NULL").arg(StuID);
+    qDebug()<<str;
     query->exec(str);
     int num=query->numRowsAffected();
     *cont=num;
@@ -310,4 +312,106 @@ user_mid_package* SqlServer::FindStuInfoInCourse(QString CourseID, int *cont){
        i++;
     }
     return stuInfoInCourse;
+}
+student_courseScore_package* SqlServer::FindAllCourseInfoToScore(int *cont){
+    QString str=QString("select * from selectedCourseInfo");
+    query->exec(str);
+    int num=query->numRowsAffected();
+    *cont=num;
+    qDebug()<<"课程的个数："<<num;
+    student_courseScore_package* courseInfoToScore;
+    courseInfoToScore=(student_courseScore_package*)malloc(sizeof(student_courseScore_package)*num);
+    int i=0;
+    while (query->next()) {
+        strncpy(courseInfoToScore[i].CourseID,query->value("CourseID").toString().toLocal8Bit().data(),10);
+        strncpy(courseInfoToScore[i].CourseName,query->value("CourseName").toString().toLocal8Bit().data(),30);
+        i++;
+    }
+    return courseInfoToScore;
+}
+student_courseScoreInfo_package* SqlServer::FindStuScoreOfCourse(QString CourseID, int *cont){
+    QString str=QString("select * from stuCourseInfo where CourseID='%1'").arg(CourseID);
+    qDebug()<<"str:"<<str;
+    query->exec(str);
+    *cont=query->numRowsAffected();
+    qDebug()<<"学生人数："<<*cont;
+    student_courseScoreInfo_package* stuCourseScoreInfo;
+    stuCourseScoreInfo=(student_courseScoreInfo_package*)malloc(sizeof(student_courseScoreInfo_package)*(*cont));
+    int i=0;
+    while (query->next()) {
+        strncpy(stuCourseScoreInfo[i].StuID,query->value("StuID").toString().toLocal8Bit().data(),10);
+        strncpy(stuCourseScoreInfo[i].StuName,query->value("StuName").toString().toLocal8Bit().data(),20);
+        strncpy(stuCourseScoreInfo[i].CourseID,query->value("CourseID").toString().toLocal8Bit().data(),10);
+        strncpy(stuCourseScoreInfo[i].CourseName,query->value("CourseName").toString().toLocal8Bit().data(),30);
+        stuCourseScoreInfo[i].CourseScore=query->value("Score").toInt();
+        qDebug()<<stuCourseScoreInfo[i].StuID<<stuCourseScoreInfo[i].StuName
+               <<stuCourseScoreInfo[i].CourseID<<stuCourseScoreInfo[i].CourseName;
+        i++;
+    }
+    return stuCourseScoreInfo;
+}
+bool SqlServer::UpdateStuScoreOfCourse(QString StuID, QString CourseID, int Score){
+
+    db.transaction();
+    QString str=QString("update stuCourseInfo set Score='%1' where StuID='%2' and CourseID='%3'").arg(Score).arg(StuID).arg(CourseID);
+    bool isOk=query->exec(str);
+    if(isOk){
+
+        db.commit();
+        return true;
+    }
+    else{
+        db.rollback();
+        return false;
+    }
+
+}
+class_Info_Package* SqlServer::FindAllClassInfo(int *cont){
+    QString str=QString("select * from classInfo");
+    query->exec(str);
+    *cont=query->numRowsAffected();
+    class_Info_Package* classInfoPackage;
+    classInfoPackage=(class_Info_Package*)malloc(sizeof(class_Info_Package)*(*cont));
+    int i=0;
+    while(query->next()){
+        strncpy(classInfoPackage[i].ClassID,query->value("ClassID").toString().toLocal8Bit().data(),10);
+        strncpy(classInfoPackage[i].ClassName,query->value("ClassName").toString().toLocal8Bit().data(),30);
+        i++;
+    }
+    return classInfoPackage;
+}
+bool SqlServer::addStuInfo(add_stu_package*addStuPackage){
+    QString str=QString("insert into StudentTable values('%1','%2','%3','../1.jpg','%4','%5','%6',1)")
+            .arg(addStuPackage->stuID).arg(addStuPackage->stuName).arg(addStuPackage->userGender)
+            .arg(addStuPackage->userNativePlace).arg(addStuPackage->userNationality)
+            .arg(addStuPackage->userCardID);
+   QString str1=QString("insert into StuClassTable values('%1','%2')").arg(addStuPackage->stuID).arg(addStuPackage->stuClassID);
+   qDebug()<<addStuPackage->stuName<<addStuPackage->userNationality<<addStuPackage->userNativePlace;
+   db.transaction();
+   bool isOk1=query->exec(str);
+   bool isOk2=query2->exec(str1);
+   if(isOk1&&isOk2){
+       db.commit();
+       return true;
+   }
+   else{
+       db.rollback();
+       return false;
+   }
+}
+bool SqlServer::deleteStu(QString StuID){
+    query->prepare("exec deleteStu ?,?");
+    query->bindValue(0,StuID);
+    query->bindValue(1,1,QSql::Out);
+    bool isOk=query->exec();
+    qDebug()<<"是否执行成功？"<<isOk;
+    int num=query->boundValue(1).toInt();
+    qDebug()<<"num:"<<num;
+    if(num==1){
+        qDebug()<<"学生删除成功！";
+        return true;
+    }
+    else{
+        return false;
+    }
 }

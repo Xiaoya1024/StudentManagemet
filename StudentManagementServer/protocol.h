@@ -14,6 +14,8 @@ statu   含义
 0x08    在学院查询列表那里，点击查看班级信息
 0x09    在班级查询列表那里，点击查看班级成员信息
 0x0A    点击课程查询按钮，查看所有的课程信息
+0x0B    点击课程查看按钮，查看该课程所有的
+0x0C
 */
 #pragma pack (1)
 typedef struct client_header{
@@ -46,6 +48,7 @@ statu   含义
 0x09    表述回应学院查询界面查看按钮，发送学院里面的班级信息
 0x0A    表述回应班级查询界面查看按钮，发送该班级的学生的信息
 0x0B    表示回应课程查询，发送所有的课程信息
+0x0C
 */
 typedef struct response_header{
     char statu;//响应状态码
@@ -58,7 +61,7 @@ typedef struct user_simple_package
     char userID[10];
     char userName[20];
 }user_simple_package;
-
+//用户完整信息包
 typedef struct user_full_package
 {
     char userID[10];
@@ -74,7 +77,7 @@ typedef struct user_full_package
     char userNativePlace[50];
     char userNationality[50];
 }user_full_package;
-
+//用户中等信息包
 typedef struct user_mid_package{
     char userID[10];
     char userName[20];
@@ -82,7 +85,18 @@ typedef struct user_mid_package{
     char userInstituteName[30];//学院
     char userClassName[30];//班级
 }user_mid_package;
+//添加学生包
+typedef struct add_stu_package{
+    char stuID[10];
+    char stuName[20];
+    char stuClassID[10];
+    char userCardID[20];
+    char userNativePlace[50];
+    char userNationality[50];
+    bool userGender;
+}add_stu_package;
 
+//学生选的课程信息包
 typedef struct student_course_package
 {
     char CourseID[10];
@@ -95,7 +109,7 @@ typedef struct student_course_package
     bool isSelected;
 
 }student_course_package;
-
+//学生课程成绩包
 typedef struct  student_courseScore_package
 {
     char CourseID[10];
@@ -103,6 +117,21 @@ typedef struct  student_courseScore_package
     int CourseScore;
 }student_courseScore_package;
 
+typedef struct class_Info_Package
+{
+    char ClassID[10];
+    char ClassName[30];
+}class_Info_Package;
+
+typedef struct  student_courseScoreInfo_package
+{
+    char StuID[10];
+    char StuName[20];
+    char CourseID[10];
+    char CourseName[30];
+    int CourseScore;
+}student_courseScoreInfo_package;
+//学院信息包
 typedef struct InstituteInfo_package
 {
     char InstituteID[10];
@@ -121,7 +150,7 @@ typedef struct ClassInfo_package
     int StuNum;
 }ClassInfo_package;
 
-
+//客户端信息
 typedef struct ClientInfo{
     int socketDescriptor;
     QString userName;

@@ -30,6 +30,12 @@ public:
     user_full_package* FindStuInfoInClass(QString ClassID,int*cont);
     student_course_package* FindAllCourseInfo(int *cont,int type);
     user_mid_package* FindStuInfoInCourse(QString CourseID,int *cont);
+    student_courseScore_package* FindAllCourseInfoToScore(int *cont);
+    student_courseScoreInfo_package* FindStuScoreOfCourse(QString CourseID,int *cont);
+    bool UpdateStuScoreOfCourse(QString StuID,QString CourseID,int Score);
+    class_Info_Package* FindAllClassInfo(int *cont);
+    bool addStuInfo(add_stu_package*addStuPackage);
+    bool deleteStu(QString StuID);
 private:
     QSqlDatabase db;
     QSqlQuery *query;
