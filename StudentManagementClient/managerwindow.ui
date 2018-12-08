@@ -1,0 +1,1089 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ManagerWindow</class>
+ <widget class="QMainWindow" name="ManagerWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="styleSheet">
+    <string notr="true">background-image: url(:/new/prefix1/237eadbfc47912d034af69af303ebc28.jpg);</string>
+   </property>
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>781</width>
+      <height>531</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>11</number>
+    </property>
+    <widget class="QWidget" name="page"/>
+    <widget class="QWidget" name="xueyuan">
+     <widget class="QTableWidget" name="tableWidget_InstitueInfo">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>10</y>
+        <width>771</width>
+        <height>511</height>
+       </rect>
+      </property>
+      <column>
+       <property name="text">
+        <string>学院号</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>学院名称</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>辅导员</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>人数</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>查看</string>
+       </property>
+      </column>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="xueyuanclass">
+     <widget class="QTableWidget" name="tableWidget_InClass">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>30</y>
+        <width>771</width>
+        <height>501</height>
+       </rect>
+      </property>
+      <column>
+       <property name="text">
+        <string>班级号</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>班级名称</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>班主任</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>班长</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>人数</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>查看</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QPushButton" name="pushButtonback1">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>75</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>返回</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="xueyuanclassstu">
+     <widget class="QTableWidget" name="tableWidget_ClassStu">
+      <property name="geometry">
+       <rect>
+        <x>5</x>
+        <y>31</y>
+        <width>771</width>
+        <height>491</height>
+       </rect>
+      </property>
+      <column>
+       <property name="text">
+        <string>学号</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>姓名</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>学院</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>班级</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>辅导员</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>班主任</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>性别</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>年级</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>出生日期</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>身份证号</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>籍贯</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>民族</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QPushButton" name="pushButtonback2">
+      <property name="geometry">
+       <rect>
+        <x>4</x>
+        <y>0</y>
+        <width>81</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>返回</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="xueyuan2">
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>120</y>
+        <width>221</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>输入新增的学院号：</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_InID">
+      <property name="geometry">
+       <rect>
+        <x>232</x>
+        <y>170</y>
+        <width>241</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_2">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>231</y>
+        <width>181</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>输入新增的学院名称：</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_InName">
+      <property name="geometry">
+       <rect>
+        <x>230</x>
+        <y>280</y>
+        <width>241</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="xueyuan3">
+     <widget class="QLabel" name="label_3">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>71</y>
+        <width>151</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>输入要修改名称的学院号：</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_InIDname">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>70</y>
+        <width>113</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>140</y>
+        <width>91</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>输入新名称：</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_InNewName">
+      <property name="geometry">
+       <rect>
+        <x>270</x>
+        <y>140</y>
+        <width>113</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="kecheng">
+     <widget class="QTableWidget" name="tableWidget_course1">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>761</width>
+        <height>491</height>
+       </rect>
+      </property>
+      <column>
+       <property name="text">
+        <string>课程号</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>课程名称</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>教师</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>学分</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>类型</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>限制人数</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>已选人数</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>查看学生</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QComboBox" name="comboBox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>1</y>
+        <width>81</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <item>
+       <property name="text">
+        <string>全部</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>通识课</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>实践课</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>英语课</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>体育课</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>专业课</string>
+       </property>
+      </item>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="kechengstu">
+     <widget class="QTableWidget" name="tableWidget_coursestu">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>40</y>
+        <width>751</width>
+        <height>481</height>
+       </rect>
+      </property>
+      <column>
+       <property name="text">
+        <string>学号</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>姓名</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>性别</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>学院</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>班级</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QPushButton" name="pushButton_6">
+      <property name="geometry">
+       <rect>
+        <x>14</x>
+        <y>2</y>
+        <width>81</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>返回</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="kecheng2"/>
+    <widget class="QWidget" name="kecheng3">
+     <widget class="QComboBox" name="comboBox_course">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>151</y>
+        <width>101</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_in">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>242</y>
+        <width>101</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>导入文件</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_out">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>320</y>
+        <width>101</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>导出文件</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_coursename">
+      <property name="geometry">
+       <rect>
+        <x>370</x>
+        <y>150</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_in">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>240</y>
+        <width>161</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>导入状态</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_13">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>490</y>
+        <width>691</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>注：登录成绩时，请先选择导出文件，将成绩填入导出文件中，再将该文件导入即可完成成绩的录入</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_addstu">
+     <widget class="QLineEdit" name="lineEdit_stuid">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>110</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>71</y>
+        <width>111</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>学号：</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_6">
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>70</y>
+        <width>121</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>姓名：</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_stuname">
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>110</y>
+        <width>161</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_7">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>157</y>
+        <width>161</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>性别：</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_gender">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>198</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">#QComboBox{background-color：transform}</string>
+      </property>
+      <item>
+       <property name="text">
+        <string>男</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>女</string>
+       </property>
+      </item>
+     </widget>
+     <widget class="QLabel" name="label_8">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>250</y>
+        <width>141</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>籍贯:</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_stunp">
+      <property name="geometry">
+       <rect>
+        <x>182</x>
+        <y>287</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_na">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>380</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_9">
+      <property name="geometry">
+       <rect>
+        <x>180</x>
+        <y>340</y>
+        <width>181</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>民族：</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_10">
+      <property name="geometry">
+       <rect>
+        <x>460</x>
+        <y>322</y>
+        <width>151</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>身份证：</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_cardid">
+      <property name="geometry">
+       <rect>
+        <x>462</x>
+        <y>380</y>
+        <width>151</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_11">
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>160</y>
+        <width>91</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>班级：</string>
+      </property>
+     </widget>
+     <widget class="QComboBox" name="comboBox_class">
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>250</y>
+        <width>161</width>
+        <height>31</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_add">
+      <property name="geometry">
+       <rect>
+        <x>520</x>
+        <y>450</y>
+        <width>91</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>提交</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_classname">
+      <property name="geometry">
+       <rect>
+        <x>450</x>
+        <y>200</y>
+        <width>221</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>TextLabel</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="page_delstu">
+     <widget class="QLabel" name="label_12">
+      <property name="geometry">
+       <rect>
+        <x>286</x>
+        <y>169</y>
+        <width>191</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>请输入要删除学生学号：</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_delstuid">
+      <property name="geometry">
+       <rect>
+        <x>288</x>
+        <y>240</y>
+        <width>191</width>
+        <height>41</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_del">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>310</y>
+        <width>101</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>微软雅黑</family>
+        <pointsize>11</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>确认删除</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>学院管理</string>
+    </property>
+    <addaction name="actionxueyuanchauxn"/>
+    <addaction name="action1"/>
+    <addaction name="action1_2"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>课程管理</string>
+    </property>
+    <addaction name="action1_3"/>
+    <addaction name="action1_4"/>
+    <addaction name="action1_5"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>人员管理</string>
+    </property>
+    <widget class="QMenu" name="menu_5">
+     <property name="title">
+      <string>老师</string>
+     </property>
+     <addaction name="action1_9"/>
+     <addaction name="action1_10"/>
+     <addaction name="action2_3"/>
+    </widget>
+    <widget class="QMenu" name="menu_6">
+     <property name="title">
+      <string>学生</string>
+     </property>
+     <addaction name="action1_11"/>
+     <addaction name="action2_4"/>
+    </widget>
+    <addaction name="menu_5"/>
+    <addaction name="menu_6"/>
+   </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>发布通知</string>
+    </property>
+    <addaction name="action1_7"/>
+    <addaction name="action2_2"/>
+    <addaction name="action3_2"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_3"/>
+   <addaction name="menu_4"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionxueyuanchauxn">
+   <property name="text">
+    <string>学院查询</string>
+   </property>
+  </action>
+  <action name="action1">
+   <property name="text">
+    <string>增加学院</string>
+   </property>
+  </action>
+  <action name="action1_2">
+   <property name="text">
+    <string>学院更名</string>
+   </property>
+  </action>
+  <action name="action1_3">
+   <property name="text">
+    <string>课程查询</string>
+   </property>
+  </action>
+  <action name="action1_4">
+   <property name="text">
+    <string>增加课程</string>
+   </property>
+  </action>
+  <action name="action2">
+   <property name="text">
+    <string>删除老师</string>
+   </property>
+  </action>
+  <action name="action3">
+   <property name="text">
+    <string>增加学生</string>
+   </property>
+  </action>
+  <action name="action4">
+   <property name="text">
+    <string>删除学生</string>
+   </property>
+  </action>
+  <action name="action1_7">
+   <property name="text">
+    <string>全体公告</string>
+   </property>
+  </action>
+  <action name="action2_2">
+   <property name="text">
+    <string>老师公告</string>
+   </property>
+  </action>
+  <action name="action3_2">
+   <property name="text">
+    <string>学生公告</string>
+   </property>
+  </action>
+  <action name="action1_8">
+   <property name="text">
+    <string>登录成绩</string>
+   </property>
+  </action>
+  <action name="action1_9">
+   <property name="text">
+    <string>1</string>
+   </property>
+  </action>
+  <action name="action1_10">
+   <property name="text">
+    <string>1</string>
+   </property>
+  </action>
+  <action name="action2_3">
+   <property name="text">
+    <string>2</string>
+   </property>
+  </action>
+  <action name="action1_11">
+   <property name="text">
+    <string>添加学生</string>
+   </property>
+  </action>
+  <action name="action2_4">
+   <property name="text">
+    <string>删除学生</string>
+   </property>
+  </action>
+  <action name="action3_3">
+   <property name="text">
+    <string>3</string>
+   </property>
+  </action>
+  <action name="action4_2">
+   <property name="text">
+    <string>4</string>
+   </property>
+  </action>
+  <action name="action6">
+   <property name="text">
+    <string>6</string>
+   </property>
+  </action>
+  <action name="action1_5">
+   <property name="text">
+    <string>登记成绩</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
